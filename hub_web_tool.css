@@ -1,0 +1,82 @@
+body {
+padding: 0;
+margin: 20px;
+background-color: #E6E6FA;
+}
+
+.assigned {
+opacity: 1.0; /* Real browsers */
+filter: alpha(opacity = 60); /* MSIE */
+}
+
+.not_assigned {
+opacity: 0.3; /* Real browsers */
+filter: alpha(opacity = 60); /* MSIE */
+}
+
+meter {
+    width: 90%;
+}
+
+table.meters {
+  table-layout: fixed;
+  width: 90%;
+  border: 1px solid blue;
+  margin: auto;
+}
+
+
+table.buttons {
+  table-layout: fixed;
+  width: 90%;
+  border: 1px;
+  margin: auto;
+}
+
+.connectButton {
+    background-color: #E6E6AA;
+    width: 95%;
+}
+
+.getSensors {
+    background-color: #ff6666;
+    width: 95%;
+}
+
+.getTriggers {
+    background-color: #ffff99;
+    width: 95%;
+}
+
+.getVersion {
+    background-color: #66b3ff;
+    width: 95%;
+}
+
+.runHub {
+    background-color: #99ff33;
+    width: 95%;
+}
+
+
+p.encoded {
+    min-height: 50px;
+    max-height: 50px;
+    max-width: 90%;
+    overflow: scroll;
+    border-width: medium;
+    border-style: groove;
+    background-color: #ffff99;
+    margin: auto;
+}
+
+p.summary {
+    min-height: 50px;
+    max-height: 100px;
+    max-width: 90%;
+    overflow: scroll;
+    border-width: medium;
+    border-style: groove;
+    background-color: #ffff99;
+    margin: auto;
+}

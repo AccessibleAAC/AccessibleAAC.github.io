@@ -1,1 +1,130 @@
-Hello World
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AAC Hub Tool</title>
+        <link rel="stylesheet" href="hub_web_tool.css" />
+        <script src= "hub_web_tool.js" > </script>
+    </head>
+  <body>
+      <h2> AAC Hub Web Tool </h2>
+      <p> Please note that this tool requires a browser supports the <a href="https://wicg.github.io/serial/"> Web Serial API </a>.
+      The API currently experimental and is only supported by recent versions of the Chrome, Opera or Edge browsers. To use this tool 
+      you need to enable your browser's Experimental Web Platform Features by copying and pasting the corresponding URL into your browser:
+      </p>
+      <ul>
+          <li><code>chrome://flags/#enable-experimental-web-platform-features</code></li>
+          <li><code>opera://flags/#enable-experimental-web-platform-features</code></li>
+          <li><code>edge://flags/#enable-experimental-web-platform-features</code></li>
+      </ul>
+
+      <p> This tool is still a work in progress. Reloading the page and reconnecting may be required, as some aspects of the API are not yet handled gracefully by the tool. </p>
+
+    <noscript>
+      <p class="notice bubble">
+        I'm sorry! For this to actully work you have to enable JavaScript in your browser.
+      </p>
+    </noscript>
+    <table class="buttons">
+      <tr>
+        <td>
+        <button id="connectButton" type="button" class="connectButton" onclick="updateConnection()">🔌 Connect</button>
+        </td>
+        <td>
+        <button id="getTriggers" type="button" disabled=true class="getTriggers"  onclick="sendHubCommand('Get configuration')">Get Configuration from Hub</button>
+        </td>
+        <td>
+        <button id="getSensors" type="button"  disabled=true class="getSensors" onclick="sendHubCommand('Get input levels')">Get Input Levels from Hub</button>
+        </td>
+        <td>
+        <button id="runHub" type="button" disabled=true class="runHub" onclick="sendHubCommand('Set to RUN mode')">Put Hub into Run Mode</button>
+        </td>
+        <td>
+        <button id="getVersion" type="button" disabled=true class="getVersion" onclick="sendHubCommand('Get hub version')">Put Hub into Idle Mode</button>
+        </td>
+      </tr>
+      </table>
+    <p><label for "hub_version"> Hub Version:</label><span id="hub_version"></span></p>
+    <table class="meters">
+      <tr>
+        <td>
+        <div id="accel_x" class="not_assigned">
+            <label for "accel_x">Accel-X:</label>
+            <meter id="accel_x_meter" min="-32768" max="32767" value="-32768"> </meter>
+        </div>
+        <div id="accel_y" class="not_assigned">
+            <label for "accel_y"> Accel-Y:</label>
+            <meter id="accel_y_meter" min="-32768" max="32767" value="-32768"> </meter>
+        </div>
+        <div id="accel_z" class="not_assigned">
+            <label for "accel_z"> Accel-Z:</label>
+            <meter id="accel_z_meter" min="-32768" max="32767" value="-32768"> </meter>
+        </div>
+
+        <div id="gyro_x" class="not_assigned">
+            <label for "gyro_x">Gyro-X:</label>
+            <meter id="gyro_x_meter" min="-32768" max="32767" value="-32768"> </meter>
+        </div>
+        <div id="gyro_y" class="not_assigned">
+            <label for "gyro_y"> Gyro-Y:</label>
+            <meter id="gyro_y_meter" min="-32768" max="32767" value="-32768"> </meter>
+        </div>
+        <div id="gyro_z" class="not_assigned">
+            <label for "gyro_z">Gyro-Z:</label>
+            <meter id="gyro_z_meter" min="-32768" max="32767" value="-32768"> </meter>
+        </div>
+        <div id="gyro_any" class="not_assigned">
+            <label for "gyro_any"> Gyro-Any:</label>
+            <meter id="gyro_any_meter" min="0" max="32767" value="0"> </meter>
+        </div>
+        </td>
+          <td>
+          <div id="port1a" class="adc_port not_assigned">
+             <label for "port1a">Port 1A:</label>
+             <meter id="port1a_meter" min="0" max="1023" value="0"> </meter>
+          </div>
+          <div id="port1b" class="adc_port not_assigned">
+             <label for "port1b">Port 1B:</label>
+             <meter id="port1b_meter" min="0" max="1023" value="0"> </meter>
+          </div>
+          <div id="port2a" class="adc_port not_assigned">
+            <label for "port2a">Port 2A:</label>
+            <meter id="port2a_meter" min="0" max="1023" value="0"> </meter>
+          </div>
+          <div id="port2b" class="adc_port not_assigned">
+            <label for "port2b">Port 2B:</label>
+            <meter id="port2b_meter" min="0" max="1023" value="0"> </meter>
+          </div>
+        <div id="port3a" class="adc_port not_assigned">
+            <label for "port3a">Port 3A:</label>
+            <meter id="port3a_meter" min="0" max="1023" value="0"> </meter>
+        </div>
+        <div id="port3b" class="adc_port not_assigned">
+            <label for "port3b">Port 3B:</label>
+            <meter id="port3b_meter" min="0" max="1023" value="0"> </meter>
+        </div>
+        <div id="usb" class="not_assigned">
+            <label for "usb"> USB:</label>
+        </div>
+        </td>
+    </table>
+    </div>
+    <label for "enc_config"> Encoded Configuration:</label>
+    <p class="encoded">
+    <span id="enc_config"></span>
+    </p>
+    <label for "config_summary">Triggers Summary:</label>
+    <span id="trigger_count"></span>
+    <p class="summary">
+    <span id="config_summary"></span>
+    </p>
+    <label for "enc_mouse"> Encoded Mouse Parameters:</label><br>
+    <p class="encoded">
+    <span id="enc_mouse"></span>
+    </p>
+    <label for "mouse_summary">Mouse Parameters:</label>
+    <p class="summary">
+    <span id="mouse_summary"></span>
+    </p>
+    </p>
+</body>
+</html>
