@@ -1,8 +1,8 @@
 // Check if Serial API is supported by the browser.
 if ("serial" in navigator) {
-    console.log("Serial Web API is supported")
+    //console.log("Serial Web API is supported")
 } else {
-    console.log("Serial Web API is NOT supported. Would you like to continue anyway?")
+    //console.log("Serial Web API is NOT supported. Would you like to continue anyway?")
 }
 
 const encoder = new TextEncoder();
@@ -50,10 +50,10 @@ async function sendHubCommand(cmd) {
         return
     }
     if ((writer != undefined) && (cmd in commands)) {
-        console.log(cmd)
+        //console.log(cmd)
         writer.write(encoder.encode(commands[cmd]));
     } else {
-        console.log("No connection to Hub.")
+        //console.log("No connection to Hub.")
         alert("No connection to Hub! Is it plugged in?")
     } 
 
@@ -74,7 +74,7 @@ function decode_number(bytes) {
     }
 
     if (size % 2 != 0) {
-        console.log("Encoded numbers must be an even number of bytes: '" + bytes + "'")
+        //console.log("Encoded numbers must be an even number of bytes: '" + bytes + "'")
         return -1
     }
 
@@ -104,13 +104,13 @@ function decode_id(bytes) {
         if (result <= 127) {
             return result
         } else {
-            console.log("Invalid id value specified: '" + bytes + "'")
+            //console.log("Invalid id value specified: '" + bytes + "'")
             return -1
         }
     }
 
     if (size > 2) {
-        console.log("Id value contains too many bytes: '" + bytes + "'")
+        //console.log("Id value contains too many bytes: '" + bytes + "'")
         return -1
     }
 }
@@ -126,7 +126,7 @@ async function parse_input_levels(bytes) {
 
     for ( let c of bytes ) {
         if ( bytes.indexOf(c) === -1 ) {
-            console.log("Invalid input level data\r\n")
+            //console.log("Invalid input level data\r\n")
             return false
         }
     }
@@ -169,7 +169,7 @@ function decode_condition (c) {
     if (c === TRIGGER_ON_HIGH || c === TRIGGER_ON_HIGH_NO_REPEAT) { return '>' }
     if (c === TRIGGER_ON_EQUAL || c === TRIGGER_ON_EQUAL_NO_REPEAT) { return '=' }
 
-    console.log("Invalid trigger condition: '" + c + "'" );
+    //console.log("Invalid trigger condition: '" + c + "'" );
     process.exit(1);
 }
 
@@ -220,7 +220,7 @@ function decode_repeat(r) {
         return true
     }
 
-    console.log("Invalid trigger repeat parameter: '" + enc_byte + "'" );
+    //console.log("Invalid trigger repeat parameter: '" + enc_byte + "'" );
     process.exit(1);
 }
 
@@ -266,9 +266,10 @@ function highlight_active_inputs_and_output_summary(triggers) {
               "GYRO-ANY": "gyro_any", "USB":"usb"
              }
 
+    for (let key in inputs) document.getElementById(inputs[key]).classList.replace('assigned', 'not_assigned')
     const keys = Object.keys(triggers);
-    console.log(triggers)
-    console.log(keys.length)
+    //console.log(triggers)
+    //console.log(keys.length)
     document.getElementById("trigger_count").innerHTML = ' ( ' +  keys.length + ' triggers )'
     for (let key in keys) {
         let trigger = triggers[key]
@@ -370,7 +371,7 @@ async function parse(response) {
 
     if (response.indexOf('V') >= 0) {
         document.getElementById("hub_version").innerHTML = response.slice(1,-1)
-        console.log("Hub Firmware Version:", response.slice(1,-1), "\n");
+        //console.log("Hub Firmware Version:", response.slice(1,-1), "\n");
     }
 
     if (response.indexOf('S') >= 0) {
@@ -390,24 +391,26 @@ async function parse(response) {
 async function updateConnection() {
 
 
-navigator.serial.addEventListener("connect", (event) => {
-    // TODO: Automatically open event.target or warn user a port is available.
-    console.log("Connection Detected")
-});
+    navigator.serial.addEventListener("connect", (event) => {
+        // TODO: Automatically open event.target or warn user a port is available.
+        //console.log("Connection Detected")
+    });
 
-navigator.serial.addEventListener("disconnect", (event) => {
-   // TODO: Remove |event.target| from the UI.
-   // If the serial port was opened, a stream error would be observed as well.
-    console.log("Disconnect")
-});
-        console.log("port", port)
+    navigator.serial.addEventListener("disconnect", (event) => {
+    // TODO: Remove |event.target| from the UI.
+    // If the serial port was opened, a stream error would be observed as well.
+        //console.log("Disconnect")
+    });
+
+    //console.log("port", port)
     if (port) {
-        console.log("Disconnect")
+        //console.log("Disconnect")
         reader.cancel()
         return
     } else {
-        console.log("Connect")
+        //console.log("Connect")
         getReader()
+        document.getElementById("dropzone").classList.replace('not_assigned','assigned')
     }
 
 }
@@ -432,7 +435,7 @@ async function getReader() {
     try {
         port = await navigator.serial.requestPort({filters});
         await port.open({ baudRate: 9600 });
-        console.log(port.getInfo())
+        //console.log(port.getInfo())
 
         connectButton.innerText = '🔌 Disconnect';
         document.getElementById("getSensors").disabled = false;    
@@ -470,14 +473,14 @@ async function getReader() {
             }
 
         }
-        console.log("Closing port")
+        //console.log("Closing port")
         writer.releaseLock();
         reader.releaseLock();
         await port.close();
-        console.log("Port closed:", port)
+        //console.log("Port closed:", port)
         connectButton.innerText = '🔌 Connect';
     } catch (e) {
-        console.log("No Hub Found.")
+        //console.log("No Hub Found.")
         connectButton.innerText = '🔌 Connect';
         document.getElementById("getSensors").disabled = true;    
         document.getElementById("getTriggers").disabled = true;    
@@ -487,3 +490,63 @@ async function getReader() {
     }
 
 }
+
+
+// Check that all characters are valid
+function validate(data) {
+    const valid_chars = '`abcdefghijklmno@ABCDEFGHIJKLMNO' + 'Y' + 'tz123567pq'
+
+    if (data[0] !== 'T' || data[data.length-1] !== 'Z') {
+        //console.log('Invalid Configuration Data: Trigger data prefix \'T\' and/or suffix \'Z\' not found.')
+        return false
+    }
+
+    for (let i = 1; i < data.length-1; i++ ) {
+        if (valid_chars.includes(data[i]) === false) {
+            //console.log("Invalid Configuration Data: '" + data[i] + "'" + ' is not a valid configuration character.')
+            return false
+        }
+    } 
+
+    return true
+}
+
+(function() {
+    let dropzone = document.getElementById('dropzone')
+
+    let upload = function (files) {
+        const reader = new FileReader()
+        reader.readAsText(files[0])
+
+        reader.onload = function(e) {
+            let new_config = reader.result
+            new_config = new_config.replace(/\s+/g, '')       // Remove whitepaces and newlines   
+            if (validate(new_config) === true) {
+                if (port === undefined) alert ("Hub is NOT connected!")
+                else {
+                    writer.write(encoder.encode(new_config));
+                    sendHubCommand('Get configuration')
+                }
+            } else {
+               alert("'" + files[0].name + "' is an INVALID configuration file!")
+            }
+        }
+    }
+
+    dropzone.ondrop = function(e) {
+        e.preventDefault()
+        this.className = "dropzone"
+        upload(e.dataTransfer.files)
+    }
+
+    dropzone.ondragover = function() {
+        this.className = "dropzone dragover"
+        return false
+    }
+
+    dropzone.ondragleave = function() {
+        this.className = "dropzone"
+        return false
+    }
+
+}())

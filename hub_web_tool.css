@@ -80,3 +80,25 @@ p.summary {
     background-color: #ffff99;
     margin: auto;
 }
+
+.dropzone {
+  width: 200px;
+  height: 200px;
+  border: 2px dashed #aaa;
+  color: #aaa;
+  display: flex;
+  padding: 25px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  border-radius: 10px;
+}
+
+.dropzone.dragover {
+  border-style: solid;
+  border-color: #000;
+  color: #000;
+}
