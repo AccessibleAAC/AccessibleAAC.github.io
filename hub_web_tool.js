@@ -75,7 +75,7 @@ function copy_config_to_clipboard() {
 
         elem.value = copy_text;
     } else{
-        elem.value = "No triggers loaded.";
+        elem.value = "Configuration text box is empty.";
     }
 
     document.body.appendChild(elem);
@@ -366,7 +366,7 @@ async function parse(response) {
         const end_line = "<br>"
         const space = "&emsp;"
         let T = TRIGGERS
-        let fmt_T = T.substring(0,4) + space.repeat(23) + start_comment + decode_number(T.substring(2,4)) + " triggers (Protocol" + end_comment + end_line 
+        let fmt_T = T.substring(0,4) + space.repeat(23) + start_comment + decode_number(T.substring(2,4)) + " triggers (Data Transfer Protocol 1.1)" + end_comment + end_line 
         T = T.substring(4)
         while (T[0] != 'Y') {
             fmt_T += T.substr(0, 23) + space.repeat(4) + start_comment + translate_trigger(T.substr(0, 23), 23) + end_comment
@@ -384,6 +384,7 @@ async function parse(response) {
             fmt_T += 'Timer 1 = ' + m['Timer 1'] + ' Timer 2 = ' + m['Timer 2'] + end_comment
         }
         document.getElementById("enc_config").innerHTML = fmt_T
+        document.getElementById("clipboard").disabled = false;    
     } 
 }
 

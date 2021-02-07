@@ -71,17 +71,6 @@ p.encoded {
     font-family: monospace;
 }
 
-p.summary {
-    min-height: 50px;
-    max-height: 100px;
-    max-width: 90%;
-    overflow: scroll;
-    border-width: medium;
-    border-style: groove;
-    background-color: #ffff99;
-    margin: auto;
-}
-
 .dropzone {
   width: 200px;
   height: 200px;
