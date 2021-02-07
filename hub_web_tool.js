@@ -378,10 +378,9 @@ async function parse(response) {
         if (T.indexOf('Y') >= 0) {
             fmt_T += T.slice(T.indexOf('Y'))
             let m = decode_mouse_parameters(T.slice(T.indexOf('Y')))
-            fmt_T +=  space + start_comment +'Delay 1 = ' + m['Delay 1'] + ' msec. Jump 1 = ' + m['Jump 1'] + ' pixels '
-            fmt_T += 'Delay 2 = ' + m['Delay 2'] + ' msec. Jump 2 = ' + m['Jump 2'] + ' pixels ' 
-            fmt_T += 'Delay 3 = ' + m['Delay 3'] + ' msec. Jump 3 = ' + m['Jump 3'] + ' pixels '
-            fmt_T += 'Timer 1 = ' + m['Timer 1'] + ' Timer 2 = ' + m['Timer 2'] + end_comment
+            fmt_T +=  space + start_comment + 'Move mouse pointer ' + m['Jump 1'] + ' px every ' + m['Delay 1'] + ' msec. After '
+            fmt_T +=  m['Timer 1'] + ' msec, move mouse pointer ' + m['Jump 2'] + ' px  every ' + m['Delay 2'] + ' msec. After another '
+            fmt_T +=  m['Timer 2'] + ' msec, move mouse pointer ' + m['Jump 3'] + ' px  every ' + m['Delay 3'] + ' msec.' + end_comment
         }
         document.getElementById("enc_config").innerHTML = fmt_T
         document.getElementById("clipboard").disabled = false;    
