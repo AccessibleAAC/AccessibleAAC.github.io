@@ -61,13 +61,14 @@ table.buttons {
 
 p.encoded {
     min-height: 50px;
-    max-height: 50px;
+    max-height: 150px;
     max-width: 90%;
     overflow: scroll;
     border-width: medium;
     border-style: groove;
     background-color: #ffff99;
     margin: auto;
+    font-family: monospace;
 }
 
 p.summary {

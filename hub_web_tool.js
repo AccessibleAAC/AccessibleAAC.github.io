@@ -31,10 +31,10 @@ const TRIGGER_ON_LOW_NO_REPEAT = '5'
 const TRIGGER_ON_HIGH_NO_REPEAT = '6'
 const TRIGGER_ON_EQUAL_NO_REPEAT = '7'
 
-const INPUTS = {1: '3A', 2: '3B', 3: '2A', 4: '2B', 5: '1A',
-                6: '1B', 7: 'USB', 8: 'ACCEL-X', 9: 'ACCEL-Y',
-                10: 'ACCEL-Z', 11: 'GYRO-X', 12: 'GYRO-Y', 13: 'GYRO-Z',
-                14: 'GYRO-ANY'
+const INPUTS = {1: 'Port 3A', 2: 'Port 3B', 3: 'Port 2A', 4: 'Port 2B', 5: 'Port 1A',
+                6: 'Port 1B', 7: 'USB', 8: 'Accel-X', 9: 'Accel-Y',
+                10: 'Accel-Z', 11: 'Gyro-X', 12: 'Gyro-Y', 13: 'Gyro-Z',
+                14: 'Gyro-ANY'
                 }
 
 async function sendHubCommand(cmd) {
@@ -57,6 +57,31 @@ async function sendHubCommand(cmd) {
         alert("No connection to Hub! Is it plugged in?")
     } 
 
+}
+
+function copy_config_to_clipboard() {
+    const elem = document.createElement('textarea');
+
+    if (TRIGGERS != undefined ) { 
+        const end_line = "\r\n"
+        triggers = TRIGGERS
+        let copy_text = triggers.substring(0,4) + end_line 
+        triggers = triggers.substring(4)
+        while (triggers[0] != 'Y') {
+            copy_text += triggers.substr(0, 23) + end_line
+            triggers = triggers.substring(23)
+        }
+        copy_text += triggers
+
+        elem.value = copy_text;
+    } else{
+        elem.value = "No triggers loaded.";
+    }
+
+    document.body.appendChild(elem);
+    elem.select();
+    document.execCommand('copy');
+    document.body.removeChild(elem);
 }
 
 function decode_byte(nibbles) {
@@ -224,11 +249,21 @@ function decode_repeat(r) {
     process.exit(1);
 }
 
+const inputs = {"Port 3A": "port3a", "Port 3B": "port3b", "Port 2A": "port2a", "Port 2B": "port2b",
+            "Port 1A": "port1a", "Port 1B": "port1b", "Accel-X": "accel_x", "Accel-Y": "accel_y",
+            "Accel-Z": "accel_z", "Gyro-X": "gyro_x", "Gyro-Y": "gyro_y", "Gyro-Z": "gyro_z", 
+            "Gyro-ANY": "gyro_any", "USB":"usb"
+            }
+
 function translate_trigger(bytes) {
+
     let trigger = { }
+    let translation = ""
 
     trigger.state = decode_state(bytes.substring(2,3));
     trigger.input = decode_input(bytes.substring(0,2));
+    document.getElementById(inputs[trigger['input']]).classList.replace('not_assigned','assigned')
+
     trigger.condition =  decode_condition(bytes.substring(7,8));
     if (trigger.input !== 'USB') {
         trigger.threshold = decode_number(bytes.substring(3,7));
@@ -241,79 +276,47 @@ function translate_trigger(bytes) {
     trigger.output = decode_output(bytes.substring(8,10), bytes.substring(11,19));
     trigger.repeat = decode_repeat(bytes[7]);
     trigger.next_state = decode_state(bytes.substring(10,12));
-    return trigger
-}
+    
+    let condition
+    if (trigger['condition'] === '<' ) condition =  ' &lt; ' 
+    if (trigger['condition'] === '>' ) condition = ' &gt; ' 
+    if (trigger['condition'] === '=' ) condition = ' = ' 
 
-function decode_triggers(bytes, trigger_length) {
-    let count = 0
-    let triggers = {}
-    while ((bytes.length > 0) && (bytes[0] !== 'Y')) {
-        let trigger = bytes.substring(0,trigger_length)
+    translation = "If " + trigger.input + " in state " + trigger.state + " and " +
+                  trigger.input  + condition 
 
-        trigger = translate_trigger(trigger)
-        triggers[count] = trigger
-        bytes = bytes.substring(trigger_length)
-        count += 1
+    if (trigger.input === 'USB') {
+
+        translation +=  trigger.character + ' for ' + trigger.duration + ' msec. Do ' 
+
+    } else {
+
+        translation +=  trigger.threshold + ' for ' + trigger.duration + ' msec. Do ' 
+
     }
 
-    return triggers
-}
-
-function highlight_active_inputs_and_output_summary(triggers) {
-    inputs = {"3A": "port3a", "3B": "port3b", "2A": "port2a", "2B": "port2b",
-              "1A": "port1a", "1B": "port1b", "ACCEL-X": "accel_x", "ACCEL-Y": "accel_y",
-              "ACCEL-Z": "accel_z", "GYRO-X": "gyro_x", "GYRO-Y": "gyro_y", "GYRO-Z": "gyro_z", 
-              "GYRO-ANY": "gyro_any", "USB":"usb"
-             }
-
-    for (let key in inputs) document.getElementById(inputs[key]).classList.replace('assigned', 'not_assigned')
-    const keys = Object.keys(triggers);
-    //console.log(triggers)
-    //console.log(keys.length)
-    document.getElementById("trigger_count").innerHTML = ' ( ' +  keys.length + ' triggers )'
-    for (let key in keys) {
-        let trigger = triggers[key]
-        let output = trigger['output']
-        //console.log(Object.keys(trigger))
-        document.getElementById(inputs[trigger['input']]).classList.replace('not_assigned','assigned')
-
-        document.getElementById("config_summary").innerHTML +=  key + ':  If ' + trigger['input']
-        document.getElementById("config_summary").innerHTML +=  ' in state ' + trigger['state'] + ' and ' + trigger['input'] + ' ' 
-
-        if (trigger['condition'] === '<' ) document.getElementById("config_summary").innerHTML +=  '&lt; ' 
-        if (trigger['condition'] === '>' ) document.getElementById("config_summary").innerHTML +=  '&gt; ' 
-        if (trigger['condition'] === '=' ) document.getElementById("config_summary").innerHTML +=  '= ' 
-
-        if (trigger['input'] === 'USB') {
-
-            document.getElementById("config_summary").innerHTML +=  trigger['character'] + ' for ' + trigger['duration'] + ' msec. Do ' 
-
-        } else {
-
-            document.getElementById("config_summary").innerHTML +=  trigger['threshold'] + ' for ' + trigger['duration'] + ' msec. Do ' 
-
-        }
-
-        if (output ['action'] === 'Buzzer') {
-            document.getElementById("config_summary").innerHTML +=  output['action'] + ' at ' + output['frequency'] + ' Hz for ' 
-            document.getElementById("config_summary").innerHTML +=  output['duration'] + ' msec. then set state of ' + trigger['input'] + ' to ' + trigger['next_state']  + '<br>'
-            continue
-        }
-
-        if (output ['action'] === 'Nothing') {
-            document.getElementById("config_summary").innerHTML +=  output['action'] + ' then set state of ' + trigger['input'] + ' to ' + trigger['next_state']  + '<br>'
-            continue
-        }
-
-        if (output ['action'] === 'Set State') {
-            document.getElementById("config_summary").innerHTML +=  output['action'] + ' of input ' + output['sensor'] + ' to ' + output['sensor_state'] 
-            document.getElementById("config_summary").innerHTML +=  ' then set state of ' + trigger['input'] + ' to ' + trigger['next_state']  + '<br>'
-            continue
-        }
-
-        document.getElementById("config_summary").innerHTML +=  output['action'] + ' ' + output['state'] 
-        document.getElementById("config_summary").innerHTML +=  ' then set state of ' + trigger['input'] + ' to ' + trigger['next_state']  + '<br>'
+    let output = trigger.output
+    if (output.action === 'Buzzer') {
+        translation +=  output['action'] + ' at ' + output['frequency'] + ' Hz for ' 
+        translation +=  output['duration'] + ' msec. then set state of ' + trigger['input'] + ' to state ' + trigger['next_state']  + '<br>'
+        return translation
     }
+
+    if (output.action === 'Nothing') {
+        translation +=  output['action'] + ' then set state of ' + trigger['input'] + ' to state ' + trigger['next_state']  + '<br>'
+        return translation
+    }
+
+    if (output.action === 'Set State') {
+        translation +=  output['action'] + ' of input ' + output['sensor'] + ' to ' + output['sensor_state'] 
+        translation +=  ' then set state of ' + trigger['input'] + ' to state ' + trigger['next_state']  + '<br>'
+        return translation
+    }
+
+    translation +=  output['action'] + ' ' + output['state'] 
+    translation +=  ' then set state of ' + trigger['input'] + ' to state ' + trigger['next_state']  + '<br>'
+
+    return translation
 }
 
 function decode_mouse_parameters(bytes) {
@@ -332,45 +335,14 @@ function decode_mouse_parameters(bytes) {
     return mouse
 }
 
-function output_mouse_summary(m){
-        document.getElementById("mouse_summary").innerHTML =  'Delay 1 = ' + m['Delay 1'] + ' msec. Jump 1 = ' + m['Jump 1'] + ' pixels'
-        document.getElementById("mouse_summary").innerHTML += '<br>' + 'Delay 2 = ' + m['Delay 2'] + ' msec. Jump 2 = ' + m['Jump 2'] + ' pixels'
-        document.getElementById("mouse_summary").innerHTML += '<br>' + 'Delay 3 = ' + m['Delay 3'] + ' msec. Jump 3 = ' + m['Jump 3'] + ' pixels'
-        document.getElementById("mouse_summary").innerHTML += '<br>' + 'Timer 1 = ' + m['Timer 1'] + ' Timer 2 = ' + m['Timer 2']
-}
-
-async function parse_configuration(bytes) {
-    //console.log("Hub Configuration", bytes[0], "\n");
-    if (bytes[0] != '1') {
-        alert("Hub uses unsupported configuration format.")
-        return
-    }
-    bytes = bytes.slice(1) 
-
-    let trigger_count = decode_number(bytes.substring(0,2))
-
-    bytes = bytes.slice(2) 
-
-    let triggers = decode_triggers(bytes, 23)
-    highlight_active_inputs_and_output_summary(triggers)
-
-    if (bytes.indexOf('Y') >= 0) {
-        document.getElementById("enc_mouse").innerHTML =  bytes.slice(bytes.indexOf('Y')) 
-        let mouse_parameters = decode_mouse_parameters(bytes.slice(bytes.indexOf('Y')))
-        output_mouse_summary(mouse_parameters)
-    }
-
-    //output_trigger_summary(triggers)
-
-
-}
-
+let hub_version = ""
 async function parse(response) {
 
     //console.log("Response:", response, "\n");
 
     if (response.indexOf('V') >= 0) {
-        document.getElementById("hub_version").innerHTML = response.slice(1,-1)
+        hub_version = response.slice(1,-1)
+        document.getElementById("hub_version").innerHTML = hub_version
         //console.log("Hub Firmware Version:", response.slice(1,-1), "\n");
     }
 
@@ -379,13 +351,40 @@ async function parse(response) {
     }
 
     if (response.indexOf('T') >= 0) {
-        TRIGGERS = response
-        document.getElementById("enc_config").innerHTML = response
-        document.getElementById("enc_config").classList.replace('not_assigned','assigned')
-        parse_configuration(response.slice(1,-1))
-    }
+        TRIGGERS = response.slice(response.indexOf('T'))
+        
+        if (TRIGGERS[1] !== '1') {
+            alert ("Hub version " + hub_version  + " - Configuration NOT supported!")
+            return
+        }
 
+        for (let key in inputs) document.getElementById(inputs[key]).classList.replace('assigned', 'not_assigned')
 
+        //format triggers for display
+        const start_comment = "<span style='color: #aaa;'>"
+        const end_comment = "</span>"
+        const end_line = "<br>"
+        const space = "&emsp;"
+        let T = TRIGGERS
+        let fmt_T = T.substring(0,4) + space.repeat(23) + start_comment + decode_number(T.substring(2,4)) + " triggers (Protocol" + end_comment + end_line 
+        T = T.substring(4)
+        while (T[0] != 'Y') {
+            fmt_T += T.substr(0, 23) + space.repeat(4) + start_comment + translate_trigger(T.substr(0, 23), 23) + end_comment
+            //console.log(translate_trigger(T.substr(0,23), 23))
+            T = T.substring(23)
+            //console.log(fmt_T, T)
+        }
+
+        if (T.indexOf('Y') >= 0) {
+            fmt_T += T.slice(T.indexOf('Y'))
+            let m = decode_mouse_parameters(T.slice(T.indexOf('Y')))
+            fmt_T +=  space + start_comment +'Delay 1 = ' + m['Delay 1'] + ' msec. Jump 1 = ' + m['Jump 1'] + ' pixels '
+            fmt_T += 'Delay 2 = ' + m['Delay 2'] + ' msec. Jump 2 = ' + m['Jump 2'] + ' pixels ' 
+            fmt_T += 'Delay 3 = ' + m['Delay 3'] + ' msec. Jump 3 = ' + m['Jump 3'] + ' pixels '
+            fmt_T += 'Timer 1 = ' + m['Timer 1'] + ' Timer 2 = ' + m['Timer 2'] + end_comment
+        }
+        document.getElementById("enc_config").innerHTML = fmt_T
+    } 
 }
 
 async function updateConnection() {
