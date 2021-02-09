@@ -486,27 +486,16 @@ async function parse(response) {
 
 async function updateConnection() {
 
-
-    navigator.serial.addEventListener("connect", (event) => {
-        // TODO: Automatically open event.target or warn user a port is available.
-        //console.log("Connection Detected")
-    });
-
-    navigator.serial.addEventListener("disconnect", (event) => {
-    // TODO: Remove |event.target| from the UI.
-    // If the serial port was opened, a stream error would be observed as well.
-        //console.log("Disconnect")
-    });
-
     //console.log("port", port)
     if (port) {
         //console.log("Disconnect")
-        reader.cancel()
-        return
+        await reader.cancel()
+        await port.close()
+        port = undefined
     } else {
         //console.log("Connect")
-        getReader()
         document.getElementById("dropzone").classList.replace('not_assigned','assigned')
+        getReader()
     }
 
 }
@@ -535,14 +524,13 @@ async function getReader() {
 
         connectButton.innerText = '🔌 Disconnect';
         document.getElementById("getSensors").disabled = false;    
-        document.getElementById("getTriggers").disabled = false;    
-        //document.getElementById("loadConfig").disabled = false;    
+        //document.getElementById("getTriggers").disabled = false;    
         document.getElementById("runHub").disabled = false;    
         document.getElementById("getVersion").disabled = false;    
 
         writer = port.writable.getWriter();
         sendHubCommand('Get hub version')
-        //sendHubCommand('Get triggers')
+        sendHubCommand('Get configuration')
         //sendHubCommand('Get input levels')
 
         const decoder = new TextDecoder();
@@ -572,6 +560,7 @@ async function getReader() {
         //console.log("Closing port")
         writer.releaseLock();
         reader.releaseLock();
+        await reader.cancel();
         await port.close();
         //console.log("Port closed:", port)
         connectButton.innerText = '🔌 Connect';
@@ -579,10 +568,30 @@ async function getReader() {
         //console.log("No Hub Found.")
         connectButton.innerText = '🔌 Connect';
         document.getElementById("getSensors").disabled = true;    
-        document.getElementById("getTriggers").disabled = true;    
-        //document.getElementById("loadConfig").disabled = true;    
+        //document.getElementById("getTriggers").disabled = true;    
         document.getElementById("runHub").disabled = true;    
         document.getElementById("getVersion").disabled = true;    
+        document.getElementById("clipboard").disabled = true;    
+        document.getElementById("resetMouse").disabled = true;    
+        document.getElementById("updateMouse").disabled = true;    
+        document.getElementById("hub_version").innerHTML = ""
+        for (let key in inputs) document.getElementById(inputs[key]).classList.replace('assigned', 'not_assigned')
+        document.getElementById("enc_config").innerHTML = ""
+        document.getElementById("parameter_table").classList.replace('assigned','not_assigned')
+        document.getElementById("jmp_1").value = ""
+        document.getElementById("dly_1").value = ""
+        document.getElementById("speed_1").innerHTML = ""
+
+        document.getElementById("timer_1").value = ""
+        document.getElementById("jmp_2").value = ""
+        document.getElementById("dly_2").value = ""
+        document.getElementById("speed_2").innerHTML = ""
+
+        document.getElementById("timer_2").value = ""
+        document.getElementById("jmp_3").value = ""
+        document.getElementById("dly_3").value = ""
+        document.getElementById("speed_3").innerHTML = ""
+        document.getElementById("dropzone").classList.replace('assigned','not_assigned')
     }
 
 }

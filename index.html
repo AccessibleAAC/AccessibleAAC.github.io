@@ -6,30 +6,34 @@
     </head>
   <body>
       <h2> AAC Hub Web Tool </h2>
-      <p> Please note that this tool requires a browser supports the <a href="https://wicg.github.io/serial/"> Web Serial API </a>.
-      The API currently experimental and is only supported by recent versions of the Chrome/Chromium, Opera or Edge browsers.
       <p>To use this tool you need to enable your browser's Experimental Web Platform Features by copying and pasting the corresponding URL into your browser:
+      <br><B>(Firefox does not support the API used by this tool.)</B>
       </p>
-      <ul>
-          <li><code>chrome://flags/#enable-experimental-web-platform-features</code></li>
-          <li><code>opera://flags/#enable-experimental-web-platform-features</code></li>
-          <li><code>edge://flags/#enable-experimental-web-platform-features</code></li>
-      </ul>
+      <table class="flags">
 
-      <p> This tool is still a work in progress. Reloading the page and reconnecting may be required, as some aspects of the API are not yet handled gracefully by the tool. </p>
-
+         <tr>
+             <th> Chrome/Chromium </th>
+             <th> Opera </th>
+             <th> Microsoft Edge </th>
+         </tr>
+         <tr>
+            <td class="flag"> <code>chrome://flags/#enable-experimental-web-platform-features</code></td>
+            <td class="flag"> <code>opera://flags/#enable-experimental-web-platform-features</code></td>
+            <td class="flag"> <code>edge://flags/#enable-experimental-web-platform-features</code></td>
+         </tr>
+     </table>
+     <p></p>
+      <p></p>
     <noscript>
       <p class="notice bubble">
         I'm sorry! For this to actually work you have to enable JavaScript in your browser.
       </p>
     </noscript>
+
     <table class="buttons">
       <tr>
         <td>
         <button id="connectButton" type="button" class="connectButton" onclick="updateConnection()">🔌 Connect</button>
-        </td>
-        <td>
-        <button id="getTriggers" type="button" disabled=true class="getTriggers"  onclick="sendHubCommand('Get configuration')">Get Configuration from Hub</button>
         </td>
         <td>
         <button id="getSensors" type="button"  disabled=true class="getSensors" onclick="sendHubCommand('Get input levels')">Get Input Levels from Hub</button>

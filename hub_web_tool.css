@@ -48,6 +48,10 @@ table.buttons {
   align: left;
 }
 
+table.flags {
+  width:90%;
+  text-align: center;
+}
 .connectButton {
     background-color: #E6E6AA;
     width: 95%;
