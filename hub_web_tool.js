@@ -363,6 +363,7 @@ function display_mouse_values() {
     document.getElementById("speed_3").innerHTML = Math.round(m['Jump 3'] * 1000/m['Delay 3'])
     document.getElementById("resetMouse").disabled = true;    
     document.getElementById("updateMouse").disabled = true;    
+    document.getElementById("parameter_table").classList.replace('not_assigned','assigned')
 }
 
 function encode_numeric(n, l) {
