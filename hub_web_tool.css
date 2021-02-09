@@ -22,15 +22,30 @@ table.meters {
   table-layout: fixed;
   width: 90%;
   border: 1px solid blue;
-  margin: auto;
+  align: left;
 }
 
+table.speed_panel {
+  border: 1px solid blue;
+  align: left;
+}
+
+#dly_1, #jmp_1,
+#dly_2, #jmp_2,
+#dly_3, #jmp_3 {
+  width: 3em;
+  margin: .4rem 0;
+}
+#timer_1, #timer_2 {
+  width: 4em;
+  margin: .4rem 0;
+}
 
 table.buttons {
   table-layout: fixed;
   width: 90%;
   border: 1px;
-  margin: auto;
+  align: left;
 }
 
 .connectButton {
@@ -61,19 +76,19 @@ table.buttons {
 
 p.encoded {
     min-height: 50px;
-    max-height: 150px;
+    max-height: 120px;
     max-width: 90%;
     overflow: scroll;
     border-width: medium;
     border-style: groove;
     background-color: #ffff99;
-    margin: auto;
     font-family: monospace;
+    align: left;
 }
 
 .dropzone {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   border: 2px dashed #aaa;
   color: #aaa;
   display: flex;

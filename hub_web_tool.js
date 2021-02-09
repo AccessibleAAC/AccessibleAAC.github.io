@@ -335,6 +335,101 @@ function decode_mouse_parameters(bytes) {
     return mouse
 }
 
+function update_speeds() {
+    document.getElementById("speed_1").innerHTML = Math.round(document.getElementById("jmp_1").value *
+                                                   1000/document.getElementById("dly_1").value)
+    document.getElementById("speed_2").innerHTML = Math.round(document.getElementById("jmp_2").value *
+                                                   1000/document.getElementById("dly_2").value)
+    document.getElementById("speed_3").innerHTML = Math.round(document.getElementById("jmp_3").value *
+                                                   1000/document.getElementById("dly_3").value)
+    document.getElementById("resetMouse").disabled = false;    
+    document.getElementById("updateMouse").disabled = false;    
+}
+
+function display_mouse_values() {
+    let m = decode_mouse_parameters(TRIGGERS.slice(TRIGGERS.indexOf('Y')))
+    document.getElementById("jmp_1").value = m['Jump 1']
+    document.getElementById("dly_1").value = m['Delay 1']
+    document.getElementById("speed_1").innerHTML = Math.round(m['Jump 1'] * 1000/m['Delay 1'])
+
+    document.getElementById("timer_1").value = m['Timer 1']
+    document.getElementById("jmp_2").value = m['Jump 2']
+    document.getElementById("dly_2").value = m['Delay 2']
+    document.getElementById("speed_2").innerHTML = Math.round(m['Jump 2'] * 1000/m['Delay 2'])
+
+    document.getElementById("timer_2").value = m['Timer 2']
+    document.getElementById("jmp_3").value = m['Jump 3']
+    document.getElementById("dly_3").value = m['Delay 3']
+    document.getElementById("speed_3").innerHTML = Math.round(m['Jump 3'] * 1000/m['Delay 3'])
+    document.getElementById("resetMouse").disabled = true;    
+    document.getElementById("updateMouse").disabled = true;    
+}
+
+function encode_numeric(n, l) {
+
+    let offset = l === 2 ? 64 : 96
+
+    n = Math.abs(n).toString(16)
+    
+    while (n.length < l) n = '0' + n
+
+    let result = ""
+    for (let i = 0; i < n.length; i++) {
+        result = result + String.fromCharCode(parseInt(n[i],16)+offset)
+    }
+    return result
+}
+
+function updateMouse() {
+
+    let new_config = TRIGGERS.substr(0, TRIGGERS.indexOf('Y')+5)
+    let value
+
+    function concat_2(value) {
+        if ((value > 0) && (value < 100)) {
+            new_config = new_config + encode_numeric(value, 2)
+            return true
+        } else {
+            alert("Value out of range")
+            display_mouse_values()
+            return false
+        }
+    }
+
+    function concat_4(value) {
+        if ((value > 99) && (value < 10000)) {
+            new_config = new_config + encode_numeric(value, 4)
+            return true
+        } else {
+            alert("Value out of range")
+            display_mouse_values()
+            return false
+        }
+    }
+    
+    value = document.getElementById('dly_1').value
+    if (!concat_2(value)) return 
+    value = document.getElementById('jmp_1').value
+    if (!concat_2(value)) return 
+    value = document.getElementById('dly_2').value
+    if (!concat_2(value)) return 
+    value = document.getElementById('jmp_2').value
+    if (!concat_2(value)) return 
+    value = document.getElementById('dly_3').value
+    if (!concat_2(value)) return 
+    value = document.getElementById('jmp_3').value
+    if (!concat_2(value)) return 
+
+    value = document.getElementById('timer_1').value
+    if (!concat_4(value)) return 
+    value = document.getElementById('timer_2').value
+    if (!concat_4(value)) return 
+
+    new_config = new_config + 'Z'
+    writer.write(encoder.encode(new_config));
+    sendHubCommand('Get configuration')
+}
+
 let hub_version = ""
 async function parse(response) {
 
@@ -378,6 +473,7 @@ async function parse(response) {
         if (T.indexOf('Y') >= 0) {
             fmt_T += T.slice(T.indexOf('Y'))
             let m = decode_mouse_parameters(T.slice(T.indexOf('Y')))
+            display_mouse_values()
             fmt_T +=  space + start_comment + 'Move mouse pointer ' + m['Jump 1'] + ' px every ' + m['Delay 1'] + ' msec. After '
             fmt_T +=  m['Timer 1'] + ' msec, move mouse pointer ' + m['Jump 2'] + ' px  every ' + m['Delay 2'] + ' msec. After another '
             fmt_T +=  m['Timer 2'] + ' msec, move mouse pointer ' + m['Jump 3'] + ' px  every ' + m['Delay 3'] + ' msec.' + end_comment

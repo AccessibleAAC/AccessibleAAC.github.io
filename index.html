@@ -7,8 +7,8 @@
   <body>
       <h2> AAC Hub Web Tool </h2>
       <p> Please note that this tool requires a browser supports the <a href="https://wicg.github.io/serial/"> Web Serial API </a>.
-      The API currently experimental and is only supported by recent versions of the Chrome, Opera or Edge browsers. To use this tool 
-      you need to enable your browser's Experimental Web Platform Features by copying and pasting the corresponding URL into your browser:
+      The API currently experimental and is only supported by recent versions of the Chrome/Chromium, Opera or Edge browsers.
+      <p>To use this tool you need to enable your browser's Experimental Web Platform Features by copying and pasting the corresponding URL into your browser:
       </p>
       <ul>
           <li><code>chrome://flags/#enable-experimental-web-platform-features</code></li>
@@ -105,8 +105,8 @@
             <label for "usb"> USB:</label>
         </div>
         </td>
+        </tr>
     </table>
-    </div>
     <p></p>
     <label for "enc_config">Configuration:</label>
     <button id="clipboard" disabled=true onclick="copy_config_to_clipboard()">Copy to Clipboard</button>
@@ -114,6 +114,46 @@
     <p class="encoded">
     <span id="enc_config"></span>
     </p>
+    <p></p>
+    <p><label for "speed_panel"> Mouse Pointer Parameters:</label>
+    <button id="resetMouse" type="button" disabled=true class="resetMouse" onclick="display_mouse_values()">Reset</button>
+    <button id="updateMouse" type="button" disabled=true class="updateMouse" onclick="updateMouse()">Upload to Hub</button>
+    <table class="speed_panel">
+      <tr >
+          <td>When activated,</td>
+          <td>
+            mouse pointer moves <input id="jmp_1" type="number" min="1" max="99" step="1" onchange="update_speeds()" > pixels
+            every <input id="dly_1" type="number" min="1" max="99" step="1" onchange="update_speeds()"> msec. 
+          </td>
+          <td>
+            (<span id="speed_1"></span> pixels/sec)
+          </td>
+      </tr>
+      <tr> 
+          <td>
+            After <input id="timer_1" type="number" min="100" max="9999" step="100" onchange="update_speeds()"> msec., 
+          </td>
+          <td>
+            mouse pointer moves <input id="jmp_2" type="number" min="1" max="99" step="1" onchange="update_speeds()" > pixels
+            every <input id="dly_2" type="number" min="1" max="99" step="1" onchange="update_speeds()" > msec. 
+          </td>
+          <td>
+            (<span id="speed_2"></span> pixels/sec)
+          </td>
+      </tr>
+      <tr> 
+          <td>
+            After <input id="timer_2" type="number" min="100" max="9999" step="100" onchange="update_speeds()"> msec.,
+          </td>
+          <td>
+            mouse pointer moves <input id="jmp_3" type="number" min="1" max="99" step="1" onchange="update_speeds()" > pixels
+            every <input id="dly_3" type="number" min="1" max="99" step="1" onchange="update_speeds()" > msec. 
+          </td>
+          <td>
+        (<span id="speed_3"></span> pixels/sec)
+          </td>
+      </tr>
+    </table>
     <p></p>
     <div id="files"> </div>
     <div id="dropzone" class="dropzone">Drop configuration file here to upload to hub.</div>
