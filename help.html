@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>netClé Help</title>
+    <link rel="shortcut icon" href="favicon.ico">        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="aac.css">  
+
+<style>
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+/* Style the tab */
+.about {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: var(--tab_background_colour);
+}
+
+
+/* Style the buttons inside the tab */
+.about button {
+  background-color: var(--tab_background_colour);
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.about button:hover {
+  background-color: var(--tab_hover_colour);
+}
+
+/* Create an active/current tablink class */
+.about button.active {
+  background-color: var(--tab_active_colour);
+}
+
+/* Style the tab content */
+.helpcontent {
+  display: none;
+  padding: 6px 12px;
+  /*
+  border: 1px solid #ccc;
+  */
+  border-top: none;
+  margin-bottom: 60px;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.peripheral_description {
+  max-width: 350px;
+  overflow: wrap;
+  border: 1px solid #ccc;
+  margin: auto;
+  padding: 10px 10px 10px 10px;
+  min-height: 475px;
+}
+
+.cfgbutton {
+  background-color: var(--nav_menu_background);
+  color: var(--tab_background_colour);
+  width: 30%;
+  border: black solid  2px;
+  border-radius: 15px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.cfgbutton:hover {
+  background-color: lightblue;
+}
+
+</style>
+</head>
+<body>
+    <!-- Header -->
+	<div id="header">
+		<h1> <img id="header_logo" src="images/logo.png", align="center" alt="Image: netClé logo"> Configuration Help</h1>
+	</div>
+
+    <div class="about">
+        <button class="helplinks" onclick="openHelp(event, 'intro')" id="defaultOpen">Introduction</button>
+        <button class="helplinks" onclick="openHelp(event, 'section1')">Getting Started</button>
+        <button class="helplinks" onclick="openHelp(event, 'section2')">Adjusting your Configuration</button>
+        <button class="helplinks" onclick="openHelp(event, 'section3')">Legacy Configurations</button>
+        <button class="helplinks" onclick="openHelp(event, 'section4')">Cursor Speeds</button>
+        <button class="helplinks" onclick="openHelp(event, 'section5')">Importing &amp Exporting</button>
+        <button class="helplinks" onclick="openHelp(event, 'section6')">Checking Signal Levels</button>
+    </div>
+
+    <div id="intro" class="helpcontent">
+        <p>
+        This help documentation assumes that the user has a netClé hub, 
+        appropriate peripherals and cables and that the user understands how to connect them.  
+        (Descriptions of the netClé hub hardware and peripheral can be found <a href="index.html"> here</a>.)
+        </p>
+        <p>
+        The netClé configuration tool is a web-based application that uses the
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API"> web serial API</a> 
+        not supported by all browsers at this time (e.g. Firefox, Safari).  
+        </p>
+        <p>
+        Supported browsers are Chrome (this includes Chromium), Edge and Opera.  
+        To enable the web serial API it may be necessary to navigate to one of:
+        </p>
+        <ul>
+            <li>chrome://flags/#enable-experimental-web-platform-features</li>
+            <li>edge://flags/#enable-experimental-web-platform-features</li>
+            <li>opera://flags/#enable-experimental-web-platform-features</li>
+        </ul>
+        <p>
+        and set the option to 'enabled'.
+        </p>
+    </div>
+
+    <div id="section1" class="helpcontent">
+        <p>
+        To create a new configuration for your netClé open your browser 
+        (see introduction for browser requirements) and navigate to 
+        to the netClé Configuration Tool.
+        </p><p>
+        To create a new configuration click on the “Add Solution” button.   
+        You will be asked to select a computer function.  After you select the function, 
+        you will be asked which device you wish to use for that function 
+        (typically one or two buttons or a joystick).  
+        Select a device which is appropriate for the user's ability.
+        Finally you will be offered a 
+        list of available pre-built solutions.  If you hover the cursor over 
+        a solution you will see a brief description on the right.
+        </p>
+        <img class="img" src="images/NewSolution.png" alt="Image: Create a solution">
+        <p>
+        After you select a solution you will be presented with a screen 
+        which provides a more detailed description and allows you to make 
+        adjustments to the configuration.  You can select the port to which 
+        you will connect the peripheral and for most solutions you are given 
+        the option to use a wired connection USB or a Bluetooth connection.  
+        (Note: To use the Bluetooth option you will need a Bluetooth-enabled
+        hub.)
+        </p>
+        <p>
+        You may add several solutions.  Typically users want a method of 
+        controlling the mouse and a method for generating mouse clicks or 
+        perhaps some special keyboard actions.  Each solution you add will 
+        create a new tab.  You can remove a solution by clicking on the 
+        small x on the right side of the tab.
+        </p>
+        <img class="img" src="images/Solutions.png" alt="Image: Solutions">
+        <p>
+        Once you have completed your selection click on the ‘Set’ button.  
+        You will be asked to connect your netClé hub to your computer’s USB 
+        port.  Once the connection is complete you should get a confirmation 
+        that the download is complete.  In addition the netClé will emit two 
+        high beeps to indicate that it received the data correctly.
+        </p>
+        <p>
+        Try out your new configuration.  If you want to adjust something or 
+        try a different solution you can make the configuration changes and 
+        then press ‘Set’ to download the adjusted configuration to the hub.
+        </p>
+    </div>
+
+    <div id="section2" class="helpcontent">
+        <p>
+        If, after using your device for a while, you want to make some 
+        adjustment to the configuration, open the configuration tool 
+        and click on ‘Get’.  You will be prompted to 
+        connect your hub to your computer and when the connection is 
+        complete you should see your netClé configuration  displayed.
+        </p>
+        <p>
+        At this point you can make adjustments (or even create a whole new 
+        configuration) and then press ‘Set’ to send that configuration to the hub.
+        </p>
+        <p>
+        It is easy to try out different configurations and options in order 
+        to see what works best for you.  
+        </p>
+        <p>
+            <i>In summary:</i>
+        </p>
+        <ul>
+            <li>
+        'Set' sends the configuration you have on your screen to the hub and overwrites everything that used to be there.
+            </li><li>
+        'Get' gets the configuration from the hub and displays it – overwriting everything that used to be on your screen.
+            </li>
+        </ul>
+    </div>
+
+    <div id="section3" class="helpcontent">
+        <p>
+        If you have an existing configuration that was created using an earlier
+        configuration tool you should begin by connecting your 
+        device and pressing ‘Get’.  This will load your existing 
+        configuration into the configuration tool.
+        </p>
+        <p>
+        The configuration tool can recognize any solution that it created, 
+        and will recognize some custom solutions built by other tools, 
+        but in many cases it will not recognize old solutions.  When this 
+        is the case those solutions will be presented in a tab 
+        labeled “Unknown”.  
+        </p>
+        <img class="img" src="images/Unknown.png" alt="Image: Unknown Solution">
+        <p>
+        You may add new solutions to unused ports.  When you click on 
+        ‘Set’ the old configurations will be preserved.  You may also choose 
+        to delete one or more ‘Unknown’ tabs (by clicking on the ‘x’ on the 
+        right edge of the tab) and replace them with a one of the 
+        pre-defined solutions.   In many cases there will be a solution 
+        available in the new tool which is functionally equivalent to your 
+        old configuration.  The old configuration is unrecognized only 
+        because it is slightly different in some detail.
+        </p>
+    </div>
+
+    <div id="section4" class="helpcontent">
+        <p>
+        When you use a solution which involves moving the cursor, the speed 
+        the cursor moves can be adjusted.  Clicking on the ‘Cursor Speed’ 
+        button brings up a window that lets you adjust the speed.  
+        Typically it is good to have the cursor start slowly and then speed up.  
+        </p>
+        <p>
+        When you click on ‘Set’ the cursor speed settings are sent to the 
+        hub along with the rest of the configuration.  Clicking on ‘Get’ 
+        retrieves the cursor settings from the hub.
+        </p>
+        <img class="img" src="images/CursorSpeed.png" alt="Image: Cursor Speed">
+    </div>
+
+    <div id="section5" class="helpcontent">
+        <p>
+        You may want to save your configuration so that you can restore it
+        after some experimentation.  Or, you may want to load a configuration
+        sent to you by technical support or even share a configuration
+        with other netClé users..  The <i>Copy</i> and <i>Paste</i> 
+        buttons and the area labeled <i>Drop Zone</i> make these actions
+        possible.
+        </p>
+        <p>
+        To save a configuration click on the <i>Copy</i> button.  You will
+        see a message telling you that the configuration data has been
+        copied to the clipboard.  Now, open a text file or an e-mail and
+        paste the clipboard contents into it (press control-V will do this).
+        The pasted text is not very intelligible to a human, but it 
+        contains all the configuration details needed by netClé.  Do not 
+        attempt to edit this text in any way.  This will make it 
+        unreadable to netClé.
+        </p>
+        <p>
+        To restore a configuration you can do the opposite.  In the document
+        where the configuration was saved, highlight the configuration text
+        and copy the text to the clipboard (control-C will do this).  Then
+        click on the <i>Paste</i> button.  The configuration should be
+        restored.  This will restore (and replace) both the displayed configuration 
+        and the configuration on the hub. 
+        Don't worry if you highlight some additional text before or after
+        the netClé configuration data.  The loading operation will find 
+        the configuration data and ignore the rest of the text.
+        </p>
+        <p>
+        If you have a plain-text file (such as a notepad or wordpad file 
+        with a .txt extension) which contains a netClé configuration you can
+        load that configuration simply by dragging the file and dropping
+        it on the area labeled <i>Drop Zone</i>.  This is considerably
+        more convenient than opening the document, selecting text and then 
+        cutting and pasting.  You can also drag and drop a block of text.
+        </p>
+    </div>
+
+    <div id="section6" class="helpcontent">
+        <p>
+        Clicking on the ‘Levels’ button opens a window that lets you see 
+        what the signals levels for each input are.  If you have a gyroscope 
+        peripheral attached it will show you how that device reacts to motion.
+        </p><p>
+        This screen is useful if you suspect that one of you peripherals 
+        is malfunctioning or poorly connected.  
+        </p><p>
+        This screen has no value beyond this trouble shooting activity.
+        </p>
+        <img class="img" src="images/Levels.png" alt="Image: Levels">
+    </div>
+
+    <!-- Footer -->
+	<footer id="footer">
+	    <div id="footer_text">
+            <small>
+                &#42 netClé is a trademark of the <a href="https://tetrasociety.org/contact/"> Tetra Society of North America. </a>
+                More information can be found at <a href="https://tetrasociety.org/netcle/"> netClé </a> or by mailing <a href="mailto:info@netcle.ca"> info@netcle.ca </a>.
+                Except where otherwise noted, content on this website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+                Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            </small>
+        </div>
+
+	    <div id="footer_image">
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+                <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+            </a>
+	    </div>
+
+	</footer>
+
+<script>
+function openHelp(evt, cityName) {
+  var i, helpcontent, helplinks;
+  helpcontent = document.getElementsByClassName("helpcontent");
+  for (i = 0; i < helpcontent.length; i++) {
+    helpcontent[i].style.display = "none";
+  }
+  helplinks = document.getElementsByClassName("helplinks");
+  for (i = 0; i < helplinks.length; i++) {
+    helplinks[i].className = helplinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+   
+</body>
+</html> 
+

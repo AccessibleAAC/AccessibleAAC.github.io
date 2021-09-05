@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>netClé Configuration</title>
+        <link rel="shortcut icon" href="favicon.ico">        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="aac.css">  
+        <script type="text/javascript" src="const.js"></script>
+        <script type="text/javascript" src="keyCodes.js"></script>
+        <script type="text/javascript" src="widgets.js"></script>
+        <script type="text/javascript" src="connect.js"></script>
+        <script type="text/javascript" src="triggers.js"></script>
+        <script type="text/javascript" src="candp.js"></script>
+        <script type="text/javascript" src="solutions.js"></script>
+        <script type="text/javascript" src="reg.js"></script>
+        <script type="text/javascript" src="chooser.js"></script>
+        <script type="text/javascript" src="cursorSpeed.js"></script>
+        <script type="text/javascript" src="recreate.js"></script>
+        <script type="text/javascript" src="calibration.js"></script>
+        <script type="text/javascript" src="levels.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    <body onload="startup();">
+    <!-- Header -->
+	<div id="header">
+		<h1> <img id="header_logo" src="images/logo.png", align="center" alt="Image: netClé logo"> Configuration Tool</h1>
+	</div>
+	    
+    <!-- Menu -->
+    <div id="nav">
+        <button onclick="window.open('./index.html', '_blank');">About netClé</button>
+
+        <div class="tooltipdiv">
+            <button onclick="Chooser.showSolutionDlg();">Add Solution</button>
+            <span class="buttontip">Select another solution to add to this configuration.</span>
+        </div>
+
+        <div class="tooltipdiv">
+            <button onclick="download();">Set</button>
+            <span class="buttontip">Write this configuration to the hub.<br/>This will overwrite what is currently on the hub.</span>
+        </div>
+            
+        <div class="tooltipdiv">
+            <button onclick="connectAndRun(Recreate.doAll);">Get</button>
+            <span class="buttontip">Read the configuration on the hub and display it here.<br/>This will overwrite what is currently here.</span>
+        </div>
+
+        <div class="tooltipdiv">
+            <button onclick="showCursorSpeed();">Cursor Speed</button>
+            <span class="buttontip">Adjust the cursor speed.</span>
+        </div>
+
+        <div class="tooltipdiv">
+            <button onclick="connectAndRun(Levels.startLevels );">Levels</button>
+            <span class="buttontip">Monitor signal levels on the hub.</span>
+        </div>
+
+        <button onclick="window.open('./help.html', '_blank');">Help</button>
+        
+        <hr> 
+        
+        <div class="tooltipdiv">
+            <button onclick="toClipboard();">Copy</button>
+            <span class="buttontip">Copy configuration data to the clipboard.</span>
+        </div>
+            
+        <div class="tooltipdiv">
+            <button onclick="CandP.fromClipBoard();">Paste</button>
+            <span class="buttontip">Get configuration data from the clipboard.</span>
+        </div>
+        
+        <div class="tooltipdiv">
+            <p id="dropzone" ondrop="CandP.dropZoneDrop(event);" ondragover="CandP.dropZoneDragOver(event);">DROP ZONE</p>
+            <span class="buttontip">Drop configuration files here to upload to the hub.</span>
+        </div>
+    </div>
+
+    <!-- main content window -->
+    <div id="content">
+        <div id="tabButtons"></div>
+        <div id="tabContents"></div>
+    </div>
+
+
+    <!-- solution dialog pop-up -->
+    <div id="solutionsDlg">
+        <span onclick="Chooser.closeIt()" class="close">&times;</span>
+        <h2>Add a Solution</h2>
+        <div id="solutionContent"></div>
+    </div>
+    
+    <div id="possibleSolutions"></div>
+
+    <div id="infoBox">
+        <h2 id="infoHeading"></h2>
+        <p id="infoContent"></p>
+        <div id="infoButtons"></div>
+    </div>
+        
+    <!-- mouse speed adjustment pop-up -->
+    <div id="cursorSpeed">
+        <h2>Cursor Speed Adjustment</h2>
+        <div>
+            <label for="csspeed1" class="cslabel1">Start speed </label>
+            <span class="cstag">slow</span>
+            <input id="csspeed1" class="csspeed" type="range" min="350" max="650" value="420"/>
+            <span class="cstag">fast</span>
+        </div>
+
+        <div>
+            <label for="csinterval1" class="cslabel2">After </label>
+            <input id="csinterval1" class="csinterval" type="number" min="50" max="10000" value="500"/>
+            <span> milliseconds</span>
+        </div>
+
+        <div>
+            <label for="csspeed2" class="cslabel1">change to </label>
+            <span class="cstag">slow</span>
+            <input id="csspeed2" class="csspeed" type="range" min="350" max="650" value="480"/>
+            <span class="cstag">fast</span>
+        </div>
+
+        <div>
+            <label for="csinterva2" class="cslabel2">After an additional </label>
+            <input id="csinterval2" class="csinterval" type="number" min="50" max="10000" value="500"/>
+            <span> milliseconds</span>
+        </div>
+
+        <div>
+            <label for="csspeed3" class="cslabel1">change to </label>
+            <span class="cstag">slow</span>
+            <input id="csspeed3" class="csspeed" type="range" min="350" max="650" value="540"/>
+            <span class="cstag">fast</span>
+        </div>
+
+        <div class="panelButtons">
+            <button onclick="saveCursorSpeed();">Save</button>
+            <button onclick="cancelCursorSpeed();">Cancel</button>
+        </div>
+    </div>
+	
+    <!-- signal level monitor pop-up -->
+    <div id="levels">
+        <h2>Signal Level Monitor</h2>
+
+        <canvas id="levelsCanvas" height="500" width="700"> </canvas>
+
+        <div class="panelButtons">
+            <button onclick="Levels.close();">Close</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+	<footer id="footer">
+        <div id="footer_text">
+            <small>
+            &#42 netClé is a trademark of the <a href="https://tetrasociety.org/contact/"> Tetra Society of North America. </a>
+            More information can be found at <a href="https://tetrasociety.org/netcle/"> netClé </a> or by mailing <a href="mailto:info@netcle.ca"> info@netcle.ca </a>.
+            Except where otherwise noted, content on this website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            </small>
+        </div>
+
+	    <div id="footer_image">
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+	         <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+            </a>
+	    </div>
+	</footer>
+    </body>
+</html>

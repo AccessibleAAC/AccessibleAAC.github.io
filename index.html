@@ -1,166 +1,466 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>AAC Hub Tool</title>
-        <link rel="stylesheet" href="hub_web_tool.css" />
-    </head>
-  <body>
-      <h2> AAC Hub Web Tool </h2>
-      <p>To use this tool you need to enable your browser's Experimental Web Platform Features by copying and pasting the corresponding URL into your browser:
-      <br><B>(Firefox does not support the API used by this tool.)</B>
-      </p>
-      <table class="flags">
+<head>
+    <title>About netClé</title>
+    <link rel="shortcut icon" href="favicon.ico">        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="aac.css">  
 
-         <tr>
-             <th> Chrome/Chromium </th>
-             <th> Opera </th>
-             <th> Microsoft Edge </th>
-         </tr>
-         <tr>
-            <td class="flag"> <code>chrome://flags/#enable-experimental-web-platform-features</code></td>
-            <td class="flag"> <code>opera://flags/#enable-experimental-web-platform-features</code></td>
-            <td class="flag"> <code>edge://flags/#enable-experimental-web-platform-features</code></td>
-         </tr>
-     </table>
-     <p></p>
-      <p></p>
-    <noscript>
-      <p class="notice bubble">
-        I'm sorry! For this to actually work you have to enable JavaScript in your browser.
-      </p>
-    </noscript>
+<style>
 
-    <table class="buttons">
-      <tr>
-        <td>
-        <button id="connectButton" type="button" class="connectButton" onclick="updateConnection()">🔌 Connect</button>
-        </td>
-        <td>
-        <button id="getSensors" type="button"  disabled=true class="getSensors" onclick="sendHubCommand('Get input levels')">Get Input Levels from Hub</button>
-        </td>
-        <td>
-        <button id="runHub" type="button" disabled=true class="runHub" onclick="sendHubCommand('Set to RUN mode')">Put Hub into Run Mode</button>
-        </td>
-        <td>
-        <button id="getVersion" type="button" disabled=true class="getVersion" onclick="sendHubCommand('Get hub version')">Put Hub into Idle Mode</button>
-        </td>
-      </tr>
-      </table>
-    <p><label for "hub_version"> Hub Version:</label><span id="hub_version"></span></p>
-    <table class="meters">
-      <tr>
-        <td>
-        <div id="accel_x" class="not_assigned">
-            <label for "accel_x">Accel-X:</label>
-            <meter id="accel_x_meter" min="-32768" max="32767" value="-32768"> </meter>
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+/* Style the tab */
+.about {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: var(--tab_background_colour);
+}
+
+
+/* Style the buttons inside the tab */
+.about button {
+  background-color: var(--tab_background_colour);
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.about button:hover {
+  background-color: var(--tab_hover_colour);
+}
+
+/* Create an active/current tablink class */
+.about button.active {
+  background-color: var(--tab_active_colour);
+}
+
+/* Style the tab content */
+.aboutcontent {
+  display: none;
+  padding: 6px 12px;
+  /*
+  border: 1px solid #ccc;
+  */
+  border-top: none;
+  margin-bottom: 60px;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.peripheral_description {
+  max-width: 350px;
+  overflow: wrap;
+  border: 1px solid #ccc;
+  margin: auto;
+  padding: 10px 10px 10px 10px;
+  min-height: 650px;
+}
+
+.cfgbutton {
+  background-color: var(--nav_menu_background);
+  /*color: var(--tab_background_colour); */
+  color: black; 
+  width: 30%;
+  border: black solid  2px;
+  border-radius: 15px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 30px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.cfgbutton:hover {
+  background-color: lightblue;
+}
+
+</style>
+</head>
+<body>
+    <!-- Header -->
+	<div id="header">
+		<h1> <img id="header_logo" src="images/logo.png", align="center" alt="Image: netClé logo"> About netClé</h1>
+	</div>
+
+    <div class="about">
+        <button class="aboutlinks" onclick="openAbout(event, 'intro')" id="defaultOpen">Introduction</button>
+        <button class="aboutlinks" onclick="openAbout(event, 'hub')">netClé Hub</button>
+        <button class="aboutlinks" onclick="openAbout(event, 'switches')">Switches &amp Sensors</button>
+        <button class="aboutlinks" onclick="openAbout(event, 'joysticks')">Joysticks</button>
+        <button class="aboutlinks" onclick="openAbout(event, 'other')">Other Peripherals</button>
+        <button class="aboutlinks" onclick="openAbout(event, 'bt')">Bluetooth</button>
+        <button class="aboutlinks" onclick="openAbout(event, 'acknowledgements')">Acknowledgments</button>
+    </div>
+
+    <div id="intro" class="aboutcontent">
+        <h2>Welcome to netClé&#42</h2>
+        <p>
+        NetClé is a customizable user-friendly device that enables people with a range of mobility limitations to independently use a computer, tablet or similar device.
+        At the heart of netClé is a custom hub containing an ATmega32U4 micro-controller which can accomodate a selection of input and output peripherals.
+        These peripherals can be combined and configured in a variety of ways to allow the user to operate netClé by touch or movement (from a single digit, limb - or even their head), 
+        in order to perform mouse and keyboard functions that are difficult for the user to accomplish with standard input devices.
+        </p>
+        <p>
+        Some actions netClé can perform, via a USB or Bluetooth connection, include:
+        <ul> 
+            <li> Move the cursor across the screen: up, down, left and right</li>
+            <li> Left and right mouse click</li>
+            <li> Scrolling up or down</li>
+            <li> Drag and drop</li>
+            <li> Keyboard actions (including key combinations)</li>
+        </ul>
+        </p>
+
+        <h2>Connecting netClé </h2>
+        <p>
+        The netClé hub peripheral ports are labelled from 0 to 3 and each netClé peripheral has a colour-coded base to indicate which port or ports it is compatible with. 
+        Peripherals are connected to the hub using the white 3.5mm male-to-male 4 conductor TRRS audio cables, included with the kit.
+        <b>Be sure that all cable connections are fully inserted into the hub and peripheral ports. </B>
+        Once the peripherals are connected, use the USB cable provided to connect the hub to a USB port on the computer displaying this web page.
+        The top of the netClé should glow green after a few seconds.
+        </p>
+        
+        <h2>Configuring netClé </h2>
+        <p>
+        Your netClé system can be configured and tuned using the menu options on the left side of the <a href="config.html"> configuration tool </a> web page. 
+        <ul> 
+            <li> Click on the "Get" option to retrieve the current configuration from the netClé.</li>
+            <li> Click on the "Add Solution" option to create a new configutation. </li>
+            <li> Click on the "Set" option to send configuration data to the netClé.</li>
+            <li> Click on the "Help" option for more detailed help documentation. </li>
+        </ul>
+        </p>
+
+        <a href="config.html" ><button class="cfgbutton">Go to netClé Configuration Tool</button></a>
+    </div>
+
+    <div id="hub" class="aboutcontent">
+        <img width="20%" src="images/netCle-Gen-2-Hub.png" alt="netClé hub">
+        <p>
+            The netClé hub contains a custom board based on an ATmega32U4 microcontroller.
+        <ul>
+            <li>Dimensions: 77mm x 68mm 23mm</li>
+            <li>Weight: 60g</li>
+            <li>Powered over USB: 5V</li>
+                <ul>
+                    <li> 50mA (without Bluetooth daughter board installed)</li>
+                    <li> 100mA (with Bluetooth daughter board installed)</li>
+                </ul>
+        </ul>
+        </p>
+    </div>
+
+    <div id="switches" class="aboutcontent">
+        <div class="flex-container">
+            <div class="peripheral_description">
+                <h2>Touch Sensor</h3>
+                <img class="center" src="images/touch_sensor.png" alt="touch sensor">
+                <ul>
+                    <li>An assistive switch requiring minimal pressure to activate</li>
+                    <li>Operated by/with:
+                        <ul>
+                            <li>Arm movement</li>
+                            <li>Moderate hand function</li>
+                            <li>Good finger control, dexterity</li>
+                            <li>Can be mounted, touched with cheek</li>
+                        </ul>
+                    </li>
+                    <li>Dimensions: 32mm x 33mm x 16mm </li>
+                    <li>Weight: 10g</li>
+                    <li>Compatible with yellow splitter</li>
+                </ul>
+            </div>
+            <div class="peripheral_description">
+                <h2>Dual Touch Sensor</h3>
+                <img class="center" src="images/dual_touch_sensor.png" alt="dual touch sensor">
+                <ul>
+                    <li>An assistive switch requiring minimal pressure to activate</li>
+                    <li>Dual sensors offer easy access to two functions concurrently</li>
+                    <li>Operated by/with:
+                        <ul>
+                            <li>Arm movement</li>
+                            <li>Moderate hand function</li>
+                            <li>Some finger control, dexterity</li>
+                        </ul>
+                    </li>
+                    <li>Dimensions: 32mm x 57mm x 16mm </li>
+                    <li>Weight: 16g</li>
+                    <li><strong>NOT</strong> compatible with yellow splitter</li>
+                </ul>
+            </div>
+            <div class="peripheral_description">
+                <h2>Mini Touch Sensor</h3>
+                <img class="center" src="images/mini_touch_sensor.png" alt="mini touch sensor">
+                <ul>
+                    <li>A proximity switch requiring no pressure to activate</li>
+                    <li>Operated by/with:
+                        <ul>
+                            <li>Arm movement</li>
+                            <li>Moderate hand function</li>
+                            <li>Good finger control, dexterity</li>
+                            <li>Can be mounted, touched with cheek</li>
+                            <li>Can be operated with a mouthstick</li>
+                        </ul>
+                    </li>
+                    <li>Dimensions: 19mm x 22mm x 15mm </li>
+                    <li>Weight: 5g</li>
+                        <li>Compatible with yellow splitter</li>
+                </ul>
+            </div>
+            <div class="peripheral_description">
+                <h2>Button Switch</h3>
+                <img class="center" src="images/tactile_switch.png" alt="tactile switch">
+                <ul>
+                    <li>A pressure switch requiring moderate touch to click and activate</li>
+                    <li>Operated by/with:
+                        <ul>
+                            <li>Arm movement</li>
+                            <li>Moderate hand function</li>
+                            <li>Some finger control, dexterity</li>
+                            <li>Can be mounted, touched with cheek</li>
+                            <li>Can be operated with a mouthstick</li>
+                        </ul>
+                    </li>
+                    <li>Diameter: 59mm</li>
+                    <li>Weight: 22g</li>
+                    <li>Compatible with yellow splitter</li>
+                </ul>
+            </div>
         </div>
-        <div id="accel_y" class="not_assigned">
-            <label for "accel_y"> Accel-Y:</label>
-            <meter id="accel_y_meter" min="-32768" max="32767" value="-32768"> </meter>
+    </div>
+
+    <div id="joysticks" class="aboutcontent">
+        <div class="flex-container">
+            <div class="peripheral_description">
+                <h2>Large Joystick</h3>
+                <img class="center" src="images/joystick.png" alt="large joystick">
+                <ul>
+                    <li>A standard Joystick that operates much like the joystick on a power wheelchair</li>
+                    <li>Operated by/with:
+                        <ul>
+                            <li>Arm movement</li>
+                            <li>Moderate hand function</li>
+                            <li>Ability to grasp/grip</li>
+                        </ul>
+                    </li>
+                    <li>Base dimensions: 78mm x 105mm x 50mm  (not including side flanges)</li>
+                    <li>Base dimensions: 108mm x 105mm x 50mm  (including side flanges)</li>
+                        <ul>
+                            <li>Shaft and knob extend 60mm above the base</li>
+                            <li>Knob diameter: 35mm</li>
+                        </ul>
+                    <li>Weight: 285g</li>
+                    <li><strong>NOT</strong> compatible with  splitter</li>
+                </ul>
+                <p> A rubber band can be looped through each eyelet and over the side of the cradle to prevent the cradle from rotating.
+                </p>
+            </div>
+            <div class="peripheral_description">
+                <h2>Large Joystick with Palm Cradle</h3>
+                <img class="center" src="images/joystick_with_cradle.png" alt="large joystick with cradle">
+                <ul>
+                    <li>The cradle makes it possible for people with minimal or no grip strength to operate the joystick</li>
+                    <li>Operated by/with:
+                        <ul>
+                            <li>Arm movement</li>
+                            <li>Minimal hand function</li>
+                        </ul>
+                    </li>
+                    <li>Base dimensions: 78mm x 105mm x 50mm  (not including side flanges)</li>
+                    <li>Base dimensions: 108mm x 105mm x 50mm  (including side flanges)</li>
+                        <ul>
+                            <li>Shaft and cradle extend 40mm above the base</li>
+                            <li>Cradle dimensions: 34mm x 133mm x 45mm</li>
+                            <li>Inner cradle width: 99mm</li>
+                        </ul>
+                    <li>Weight: 300g</li>
+                    <li><strong>NOT</strong> compatible with  splitter</li>
+                </ul>
+                <p> A rubber band can be looped through each eyelet and over the side of the cradle to prevent the cradle from rotating.
+                </p>
+            </div>
+            <div class="peripheral_description">
+                <h2>Mini Joystick</h3>
+                <img class="center" src="images/mini_joystick.png" alt="mini joystick">
+                <ul>
+                    <li>A small easy to use joystick that is operated by one or two fingers</li>
+                    <li>Operated by/with:
+                        <ul>
+                            <li>Arm movement</li>
+                            <li>Moderate hand function</li>
+                            <li>Good finger control, dexterity</li>
+                        </ul>
+                    </li>
+                    <li>Base dimensions: 40mm x 51mm x 28mm </li>
+                        <ul>
+                            <li>Handle extends 12mm above the base</li>
+                        </ul>
+                    <li>Weight: 28g</li>
+                    <li><strong>NOT</strong> compatible with splitter</li>
+                </ul>
+            </div>
+            <div class="peripheral_description">
+                <h2>Mini Joystick with Extender Rod</h3>
+                    <img class="center" src="images/mini_joystick_with_rod.png" alt="mini joystick with extender">
+                    <ul>
+                        <li>The extender rod operated the mini joystick  with less finger strength</li>
+                        <li>Operated by/with:
+                        <ul>
+                            <li>Arm movement</li>
+                            <li>Moderate hand function</li>
+                            <li>Some finger control, dexterity</li>
+                        </ul>
+                    </li>
+                    <li>Base dimensions: 40mm x 51mm x 28mm </li>
+                        <ul>
+                            <li>Handle extends 50mm above the base</li>
+                        </ul>
+                    <li>Weight: 30g</li>
+                    <li><strong>NOT</strong> compatible with splitter</li>
+                </ul>
+            </div>
         </div>
-        <div id="accel_z" class="not_assigned">
-            <label for "accel_z"> Accel-Z:</label>
-            <meter id="accel_z_meter" min="-32768" max="32767" value="-32768"> </meter>
+    </div>
+
+    <div id="other" class="aboutcontent">
+        <div class="flex-container">
+            <div class="peripheral_description">
+                <h2>Gyro</h3>
+                <img class="center"src="images/gyro.png" alt="gyro">
+                <ul>
+                    <li>Mount to a headband or hat, the gyroscope controls functions by moving the device left, right, up and down</li>
+                    <li>Operated by/with:
+                        <ul>
+                            <li>Head movement: left, right, up, down</li>
+                            <li>Attach to a user's arm</li>
+                        </ul>
+                    </li>
+                    <li>Dimensions: 25mm x 28mm x 17mm </li>
+                    <li>Weight: 8g</li>
+                    <li>netCle can only support 1 gyro peripheral</li>
+                    <li>Compatible with green splitter when used with lightbox peripheral</li>
+                </ul>
+            </div>
+            <div class="peripheral_description">
+                <h2>Lightbox</h3>
+                <img class="center" src="images/lightbox.png" alt="lightbox">
+                <ul>
+                    <li>Provides visual feedback to help the user identify the mode the peripheral is in, when the peripheral is set to perform multiple functions</li>
+                    <li>Dimensions: 38mm x 122mm x 35mm </li>
+                    <li>Weight: 42g</li>
+                    <li>Compatible with green splitter</li>
+                </ul>
+            </div>
+            <div class="peripheral_description">
+                <h2>Splitters</h3>
+                <img class="center" src="images/splitters.png" alt="splitters">
+                <ul>
+                    <li>Enables 2 peripherals to be plugged into the same port</li>
+                        <ul>
+                            <li>Green splitter for gyro/lightbox</li>
+                            <li>Yellow splitter for single switches and touch sensors</li>
+                        </ul>
+                    <li>Dimensions: 30mm x 30mm x 14mm </li>
+                    <li>Weight: 9g</li>
+                    <li>Maximum 1 splitter per port (<strong>cannot be daisy-chained</strong>)</li>
+                </ul>
+            </div>
+            <div class="peripheral_description">
+                <h2>Switch Adaptor</h3>
+                <img class="center" src="images/switch_adaptor.png" alt="switch adaptor">
+                <ul>
+                    <li>Enables commercial switches with standard mono plugs to connect to netClé</li>
+                    <li>Supports 1 or 2 commercial switches</li>
+                    <li>Dimensions: 30mm x 30mm x 14mm </li>
+                    <li>Weight: 9g</li>
+                    <li><strong>NOT</strong> compatible with yellow splitter</li>
+                    <li>Maximum 1 adaptor per port (<strong>cannot be daisy-chained</strong>)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="bt" class="aboutcontent">
+        <p>
+        netClé can be configured to emulate a bluetooth mouse and keyboard, with the installation of a serial to bluetooth daughter board.
+        </p>
+    </div>
+
+    <div id="acknowledgements" class="aboutcontent">
+        <p>
+        netClé is based on SensAct, an assistive device developed by volunteers at the Saint Vincent Hospital in Ottawa Canada. 
+        </p>
+        <p>
+        Since early 2019, with funds from the Canadian federal government, the <a href="https://tetrasociety.org">Tetra Society </a> has been developing netClé with the goal of 
+        being able to offer an affordable finished product on <a href="https://tetragear.com">TetraGear</a>.
+        </p>
+        <p>
+        The netClé development team is:
+            <ul>
+                <li>Yih Lerh Huang </li>
+                <li>Andrew Hodgson </li>
+                <li>Don Haig </li>
+            </ul>
+        </p>
+        <p>
+        Please send your feedback to: <a href="mailto:info@netcle.ca"> info@netcle.ca </a>
+        </p>
+
+    </div>
+
+    <!-- Footer -->
+	<footer id="footer">
+	    <div id="footer_text">
+            <small>
+                &#42 netClé is a trademark of the <a href="https://tetrasociety.org/contact/"> Tetra Society of North America. </a>
+                More information can be found at <a href="https://tetrasociety.org/netcle/"> netClé </a> or by mailing <a href="mailto:info@netcle.ca"> info@netcle.ca </a>.
+                Except where otherwise noted, content on this website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+                Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            </small>
         </div>
 
-        <div id="gyro_x" class="not_assigned">
-            <label for "gyro_x">Gyro-X:</label>
-            <meter id="gyro_x_meter" min="-32768" max="32767" value="-32768"> </meter>
-        </div>
-        <div id="gyro_y" class="not_assigned">
-            <label for "gyro_y"> Gyro-Y:</label>
-            <meter id="gyro_y_meter" min="-32768" max="32767" value="-32768"> </meter>
-        </div>
-        <div id="gyro_z" class="not_assigned">
-            <label for "gyro_z">Gyro-Z:</label>
-            <meter id="gyro_z_meter" min="-32768" max="32767" value="-32768"> </meter>
-        </div>
-        <div id="gyro_any" class="not_assigned">
-            <label for "gyro_any"> Gyro-Any:</label>
-            <meter id="gyro_any_meter" min="0" max="32767" value="0"> </meter>
-        </div>
-        </td>
-          <td>
-          <div id="port1a" class="adc_port not_assigned">
-             <label for "port1a">Port 1A:</label>
-             <meter id="port1a_meter" min="0" max="1023" value="0"> </meter>
-          </div>
-          <div id="port1b" class="adc_port not_assigned">
-             <label for "port1b">Port 1B:</label>
-             <meter id="port1b_meter" min="0" max="1023" value="0"> </meter>
-          </div>
-          <div id="port2a" class="adc_port not_assigned">
-            <label for "port2a">Port 2A:</label>
-            <meter id="port2a_meter" min="0" max="1023" value="0"> </meter>
-          </div>
-          <div id="port2b" class="adc_port not_assigned">
-            <label for "port2b">Port 2B:</label>
-            <meter id="port2b_meter" min="0" max="1023" value="0"> </meter>
-          </div>
-        <div id="port3a" class="adc_port not_assigned">
-            <label for "port3a">Port 3A:</label>
-            <meter id="port3a_meter" min="0" max="1023" value="0"> </meter>
-        </div>
-        <div id="port3b" class="adc_port not_assigned">
-            <label for "port3b">Port 3B:</label>
-            <meter id="port3b_meter" min="0" max="1023" value="0"> </meter>
-        </div>
-        <div id="usb" class="not_assigned">
-            <label for "usb"> USB:</label>
-        </div>
-        </td>
-        </tr>
-    </table>
-    <p></p>
-    <label for "enc_config">Configuration:</label>
-    <button id="clipboard" disabled=true onclick="copy_config_to_clipboard()">Copy to Clipboard</button>
-    <p></p>
-    <p class="encoded">
-    <span id="enc_config"></span>
-    </p>
-    <p></p>
-    <p><label for "speed_panel"> Mouse Pointer Parameters:</label>
-    <button id="resetMouse" type="button" disabled=true class="resetMouse" onclick="display_mouse_values()">Reset</button>
-    <button id="updateMouse" type="button" disabled=true class="updateMouse" onclick="updateMouse()">Upload to Hub</button>
-    <table id="parameter_table" class="speed_panel not_assigned">
-      <tr >
-          <td>When activated,</td>
-          <td>
-            mouse pointer moves <input id="jmp_1" type="number" min="1" max="99" step="1" onchange="update_speeds()" > pixels
-            every <input id="dly_1" type="number" min="1" max="99" step="1" onchange="update_speeds()"> msec. 
-          </td>
-          <td>
-            (<span id="speed_1"></span> pixels/sec)
-          </td>
-      </tr>
-      <tr> 
-          <td>
-            After <input id="timer_1" type="number" min="100" max="9999" step="100" onchange="update_speeds()"> msec., 
-          </td>
-          <td>
-            mouse pointer moves <input id="jmp_2" type="number" min="1" max="99" step="1" onchange="update_speeds()" > pixels
-            every <input id="dly_2" type="number" min="1" max="99" step="1" onchange="update_speeds()" > msec. 
-          </td>
-          <td>
-            (<span id="speed_2"></span> pixels/sec)
-          </td>
-      </tr>
-      <tr> 
-          <td>
-            After <input id="timer_2" type="number" min="100" max="9999" step="100" onchange="update_speeds()"> msec.,
-          </td>
-          <td>
-            mouse pointer moves <input id="jmp_3" type="number" min="1" max="99" step="1" onchange="update_speeds()" > pixels
-            every <input id="dly_3" type="number" min="1" max="99" step="1" onchange="update_speeds()" > msec. 
-          </td>
-          <td>
-        (<span id="speed_3"></span> pixels/sec)
-          </td>
-      </tr>
-    </table>
-    <p></p>
-    <div id="files"> </div>
-    <div id="dropzone" class="dropzone">Drop configuration file here to upload to hub.</div>
+	    <div id="footer_image">
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+                <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+            </a>
+	    </div>
+
+	</footer>
+
+<script>
+function openAbout(evt, cityName) {
+  var i, aboutcontent, aboutlinks;
+  aboutcontent = document.getElementsByClassName("aboutcontent");
+  for (i = 0; i < aboutcontent.length; i++) {
+    aboutcontent[i].style.display = "none";
+  }
+  aboutlinks = document.getElementsByClassName("aboutlinks");
+  for (i = 0; i < aboutlinks.length; i++) {
+    aboutlinks[i].className = aboutlinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+   
 </body>
-        <script src= "hub_web_tool.js" > </script>
-</html>
+</html> 
+

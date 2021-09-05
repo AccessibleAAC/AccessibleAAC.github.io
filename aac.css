@@ -1,0 +1,498 @@
+:root {
+     --header_background: #008170;
+     --header_text: #effffc;
+     --nav_menu_background: blue;
+     --tab_background_colour: orange;
+     --tab_hover_colour: #fccf00;
+     --tab_active_colour: #fb9101;
+}
+
+body {
+    font-family: "Times New Roman", serif;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--header_text);
+}
+
+#header_logo {
+    height: 2em;
+}	
+#header {
+    background-color: var(--header_background);
+    color: var(--header_text);
+    padding-top: 10px;
+    padding-bottom: 15px;
+    text-align: center;
+    font-size: 1.5em;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 50%;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0px;
+    padding: 10px 10px 0px 10px;
+    width: 100%;
+    height: 50px;
+    background-color: var(--tab_background_colour);
+    display: table;
+}
+
+#footer_text {
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+#footer_image {
+    text-align: left;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+/* Navigation side-bar */
+#nav {
+    width: 170px;
+    background-color: var(--nav_menu_background);
+    padding: 20px 2px;
+    float: left;
+    border: black solid 2px;
+    margin: 0px;
+}
+#nav button{
+    background-color: var(--header_text);
+    border-radius: 13px;
+    margin: 10px 8px;
+    width: 150px;
+    font-size: 1.2em; 
+    box-shadow: 0 2px 2px #888888;
+}
+#nav button:hover {
+    color: orange;
+}
+
+#dropzone {
+    border: 4px gray dashed;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-left: 21px;
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    editable: false;
+    font-size: 1.4em;
+    text-align: center;
+    background-color: #eee;
+    color: #666;
+}
+
+#dropzone:hover  {
+  border-style: solid;
+  border-color: #333;
+  color: #333;
+}
+
+/* Content div - holds tabs and tab-content */
+/* Not much to do, just provide space for navigation colunm */
+#content {
+    margin-left: 178px;
+}
+
+/* Tabs --------------------------------------------------- */
+#tabButtons {  /* The bar which holds the buttons */
+/*
+*/
+    border: 1px solid #ccc;
+    min-height: 40px;
+    background-color: var(--tab_background_colour);
+    padding-left: 0px;
+    margin-left: 0px;
+}
+
+div.tabDivItem { /* A div which holds each tab button and close btn. */
+    display: inline;
+    position: relative;
+    background-color: orange;
+    padding: 10px 0px 10px 0px;
+/*
+    top: 7px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+*/
+} 
+
+input.tabButton { /* The button which selects the tab. */
+    font-size: 1.2em;
+    padding: 1px 5px 10px 21px;
+    border: none;
+    margin: 0;
+    background: rgba(0,0,0,0); /* this make the background transparent */
+/*
+*/
+}
+
+div.tabDivItem:hover {
+    background-color: var(--tab_hover_colour);
+}
+
+div.activeItem,
+div.activeItem:hover {
+    /*background-color: #effffc; */
+    background-color: var(--tab_active_colour);
+}
+
+
+input.tabButton:hover,
+input.tabButton:focus {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+span.closeTab {
+    position:relative;
+    top: 5px;
+    padding: 0px 4px 0px 2px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.closeTab:hover,
+.closeTab:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+#tabContents {  /* The div that encloses all tabContent items */
+    visibility: visible;
+    display: block;
+    margin: 10px;
+}
+
+div.tabContent { /* A div enclosing the content for one tab */
+}
+
+/* Solutions Dialog Elements ------------------------------ */
+
+
+/* Main solutions dialog box. */
+#solutionsDlg {
+    display: none;
+    position: absolute;
+    top: 120px;
+    left: 200px;
+    z-index: 1;
+    background-color: #e6fffc;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    width: 500px;
+    height: 400px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+    float: left;
+}
+
+#possibleSolutions {
+    z-index: 2;
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #e6fffc;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    width: 360px;
+    height: 220px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+    float: left;}
+
+/* Title */
+#solutionsDlg > h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 150%; 
+    text-align: center;
+}
+
+p.solutionTitle, p.solutionsTitle {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 3px 8px;
+}
+
+p.devicesTitle {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 3px 8px;
+    position: relative;
+    left: 40px;
+}
+
+.activityButton, .solutionButton {
+    font-family: "Times New Roman", serif;
+    font-size: 1.2em;
+    display: block;
+    border: none;
+    background-color: #e6fffc;
+    padding: 5px 20px;
+    position: relative;
+}
+
+.deviceButton {
+    font-family: "Times New Roman", serif;
+    font-size: 1.2em;
+    display: block;
+    border: none;
+    border-left: 2px solid black;
+    background-color: #effffc;
+    padding: 5px 10px;   
+    position: relative;
+    left: 50px;
+}
+
+.close {
+    font-size: 28px;
+    font-weight: bold;
+    float: right;
+    color: #aaa;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    cursor: pointer;
+}
+
+.activityButton:hover, 
+.activityButton:focus,
+.solutionButton:hover, 
+.solutionButton:focus,
+.deviceButton:hover,
+.deviceButton:focus {
+    background-color: lightblue;
+}
+
+.tooltipdiv {
+    position: relative;
+    display: block;
+}
+
+/* .tooltip is used for display of solution short descriptions */
+.tooltipdiv .tooltip {
+    visibility: hidden;
+    width: 240px;
+    position: absolute;
+    top: -10px;
+    left: 75%;
+    z-index: 3;   
+    padding: 5px;
+    background-color: #effffc;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 1.1em;
+}
+
+.tooltipdiv:hover .tooltip {
+    visibility: visible;
+}
+
+/* buttontip is tooltip data for buttons. */
+.tooltipdiv .buttontip {
+    visibility: hidden;
+    width: 270px;
+    position: absolute;
+    top: -10px;
+    left: 90%;
+    z-index: 1;   
+    padding: 5px;
+    background-color: #effffc;
+    border: 1px solid black;
+    border-radius: 10px; 
+    font-size: 14pt;
+    text-align: left;
+}
+
+.tooltipdiv:hover .buttontip {
+    visibility: visible;
+}
+
+/* =========== Solution content ================== */
+.solutionBlock {
+    margin: 10px 5px;
+    padding: 3px 10px 10px 10px;
+    border-radius: 10px;
+    border: 1px solid lightgrey;
+    min-height: 150px;
+}
+
+div.solutionBlock h2{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 140%;  
+    margin: 0px;
+}
+
+.solutionBlock p {
+    font-size: 1.2em;
+}
+
+/* Input controls */
+.setting {
+    font-size: 1.2em;
+    padding: 4px;
+    margin: 0px 0px 4px 0px;
+}
+
+select.setting {
+    font-size: 1em;
+}
+
+.textinput {
+    font-family: monospace;
+}
+
+#infoBox {
+    display: none;
+    position: fixed;
+    top: 120px;
+    left: 250px;
+    z-index: 1;
+    background-color: #effffc;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    width: fit-content;
+    max-width: 650px;
+    height: fit-content;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+}
+
+#infoContent {
+    font-size: 1.2em;
+    padding: 5px;
+}
+
+#infoButtons {
+    margin: auto;
+   width: fit-content;
+}
+#infoButtons input {
+    margin: 8px;
+    font-size: 1.2em;
+}
+
+/* ========== Cursor Speed Styling =============== */
+#cursorSpeed {
+    display: none;
+    position: absolute;
+    top: 120px;
+    left: 200px;
+    z-index: 1;
+    padding: 20px;
+    font-size: 1.2em;
+    background-color: #effffc;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    width: fit-content;
+    height: fit-content;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+}
+
+/* Slider */
+.csspeed {
+  -webkit-appearance: none;
+  width: 300px;
+  margin: 10px 5px;
+  height: 10px;
+  background: blue;
+  outline: none;
+}
+
+.csspeed:hover {
+  opacity: 1;
+}
+
+.csspeed::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 25px;
+  background: blue;
+  cursor: pointer;
+}
+
+.csspeed::-moz-range-thumb {
+  width: 10px;
+  height: 40px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+/* The slow, fast labels at the ends of the slider */
+.cstag {
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+/* Number box */
+.csinterval {
+    width: 70px;
+    margin: 10px 5px;
+    font-size: 1.0em;
+    text-align: right;
+}
+
+/* Slider label */
+.cslabel1 {
+    display: inline-block;
+    width: 90px;
+    margin: 10px 5px;
+}
+
+/* Label on number input */
+.cslabel2 {
+    margin: 10px 5px;
+}
+
+/* Div holding the buttons - also used for Levels button. */
+.panelButtons {
+    margin: auto;
+   width: fit-content;    
+}
+
+.panelButtons button {
+    font-size: 1.0em;
+    margin: 15px 8px 8px 8px;
+}
+
+/* Levels Monitor */
+
+#levels {
+    display: none;
+    position: absolute;
+    top: 120px;
+    left: 200px;
+    z-index: 1;
+    padding: 20px;
+    font-size: 1.2em;
+    background-color: #effffc;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    width: fit-content;
+    height: fit-content;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+}
+
+#levels > h2{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 140%;  
+    text-align: center;
+}
