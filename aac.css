@@ -1,10 +1,10 @@
 :root {
-     --header_background: #008170;
+     --header_background: #007a6c;
      --header_text: #effffc;
-     --nav_menu_background: blue;
-     --tab_background_colour: orange;
+     --nav_menu_background: lightgrey;
+     --tab_background_colour: #ef9b20;
      --tab_hover_colour: #fccf00;
-     --tab_active_colour: #fb9101;
+     --tab_active_colour: #ff6101;
 }
 
 body {
