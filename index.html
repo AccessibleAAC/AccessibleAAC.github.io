@@ -103,7 +103,7 @@
         <button class="aboutlinks" onclick="openAbout(event, 'switches')">Switches &amp Sensors</button>
         <button class="aboutlinks" onclick="openAbout(event, 'joysticks')">Joysticks</button>
         <button class="aboutlinks" onclick="openAbout(event, 'other')">Other Peripherals</button>
-        <button class="aboutlinks" onclick="openAbout(event, 'bt')">Bluetooth</button>
+        <button class="aboutlinks" onclick="openAbout(event, 'config_tool')">Configuration Tool</button>
         <button class="aboutlinks" onclick="openAbout(event, 'acknowledgements')">Acknowledgments</button>
     </div>
 
@@ -134,19 +134,7 @@
         Once the peripherals are connected, use the USB cable provided to connect the hub to a USB port on the computer displaying this web page.
         The top of the netClé should glow green after a few seconds.
         </p>
-        
-        <h2>Configuring netClé </h2>
-        <p>
-        Your netClé system can be configured and tuned using the menu options on the left side of the <a href="config.html"> configuration tool </a> web page. 
-        <ul> 
-            <li> Click on the "Get" option to retrieve the current configuration from the netClé.</li>
-            <li> Click on the "Add Solution" option to create a new configutation. </li>
-            <li> Click on the "Set" option to send configuration data to the netClé.</li>
-            <li> Click on the "Help" option for more detailed help documentation. </li>
-        </ul>
-        </p>
 
-        <a href="config.html" ><button class="cfgbutton">Go to netClé Configuration Tool</button></a>
     </div>
 
     <div id="hub" class="aboutcontent">
@@ -162,6 +150,12 @@
                     <li> 100mA (with Bluetooth daughter board installed)</li>
                 </ul>
         </ul>
+        </p>
+        <p>
+        netClé can be configured to emulate a USB mouse and/or keyboard.
+        </p>
+        <p>
+        If an optional Bluetooth daughter board is installed, netClé can also emulate a Bluetooth mouse and/or keyboard. 
         </p>
     </div>
 
@@ -429,10 +423,20 @@
         </div>
     </div>
 
-    <div id="bt" class="aboutcontent">
+    <div id="config_tool" class="aboutcontent">
+        
         <p>
-        netClé can be configured to emulate a bluetooth mouse and keyboard, with the installation of a serial to bluetooth daughter board.
+        Your netClé system can be configured and tuned using the menu options on the left side of the <a href="config.html"> configuration tool </a> web page. 
+        <ul> 
+            <li> Click on the "Get" option to retrieve the current configuration from the netClé.</li>
+            <li> Click on the "Add Solution" option to create a new configutation. </li>
+            <li> Click on the "Set" option to send configuration data to the netClé.</li>
+            <li> Click on the "Help" option for more detailed help documentation. </li>
+        </ul>
         </p>
+
+        <a href="config.html" ><button class="cfgbutton">Go to netClé Configuration Tool</button></a>
+
     </div>
 
     <div id="acknowledgements" class="aboutcontent">
