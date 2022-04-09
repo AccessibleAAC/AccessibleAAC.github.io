@@ -47,7 +47,8 @@ var Connection = {
     open: async function() {
         const filters = [
             { usbVendorId: 0x2341, usbProductId: 0x8036 },
-            { usbVendorId: 0x10c4, usbProductId: 0xea60 }
+            { usbVendorId: 0x10c4, usbProductId: 0xea60 },
+            { usbVendorId: 0x303a, usbProductId: 0x7003 }
             ]; 
         this.thePort = await navigator.serial.requestPort({filters});
         await this.thePort.open({baudRate: 9600});
